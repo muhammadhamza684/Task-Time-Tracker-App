@@ -5,5 +5,7 @@
         public int TaskId { get; set; }
         public int UserId { get; set; }
         public decimal HoursSpent { get; set; }
+
+        public DateTime? LogDate { get; set; }
     }
 }

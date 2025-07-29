@@ -1,0 +1,103 @@
+﻿using CsvHelper;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
+using Task___Time_Tracker_App.DTO;
+using Task___Time_Tracker_App.Models;
+using Task___Time_Tracker_App.Repository;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+
+namespace Task___Time_Tracker_App.Services
+{
+    public interface ITaskService
+    {
+        Task<List<TaskDTO>> GetAllTaskAsync(int pageNO, int pageSize);
+        Task<Models.Tasks> GetTaskByIdAsync(int id);
+
+        Task<Tasks> PostTaskAsync(Tasks tasks);
+
+        Task<Tasks> UpdateTaskAsync(int id,  Tasks tasks);
+
+        Task<Tasks> FilterTaskByNameAsync(string taskName);
+
+        Task<Tasks> ChangeTaskStatus(int id, string status);
+
+        Task<byte[]> GenerateTaskReportAsync();
+        //Task<byte[]> ExportCsvAsync();
+    }
+    public class TaskService : ITaskService
+    {
+        private readonly ITasksRepositry _tasksRepositry;
+        public TaskService(ITasksRepositry tasksRepositry)
+
+        {
+            _tasksRepositry = tasksRepositry;
+        }
+
+
+        public async Task<List<TaskDTO>> GetAllTaskAsync(int pageNO, int pageSize)
+        {
+            var Results = await _tasksRepositry.GetAllTaskAsync(pageNO, pageSize);
+            return Results;
+        }
+
+        public async Task<Tasks> GetTaskByIdAsync(int id)
+        {
+            var Result = await _tasksRepositry.GetTaskByIdAsync(id);
+            return Result;
+        }
+
+        public async Task<Tasks> PostTaskAsync(Tasks tasks)
+        {
+            var Result = await _tasksRepositry.PostTaskAsync(tasks);
+            return Result;
+        }
+
+        public async Task<Tasks> UpdateTaskAsync(int id, Tasks tasks)
+        {
+            var Result = await _tasksRepositry.UpdateTaskAsync(id, tasks);
+            if (Result == null)
+            {
+                return null;
+            }
+
+            return Result;
+        }
+
+
+        public async Task<Tasks> FilterTaskByNameAsync(string taskName)
+        {
+            var Result = await _tasksRepositry.FilterTaskByNameAsync(taskName);
+            return Result;
+        }
+
+        public async Task<Tasks> ChangeTaskStatus(int id, string status)
+        {
+            var Result = await _tasksRepositry.ChangeTaskStatus(id, status);
+            return Result;
+        }
+
+        public Task<byte[]> GenerateTaskReportAsync()
+        {
+            return _tasksRepositry.GenerateTaskReportAsync();
+        }
+        /*
+       Task<List<FileResult>> ITaskService.GenerateTaskReport()
+       {
+           var result = _tasksRepositry.GenerateTaskReport();
+           using (var memoryStream = new MemoryStream())
+           {
+               using (var streamWriter = new StreamWriter(memoryStream))
+               using (var csvWriter = new CsvWriter(streamWriter, CultureInfo.InvariantCulture))
+               {
+                   csvWriter.WriteRecords(result);
+               }
+
+               //return File(memoryStream.ToArray(), "text/csv", $"Export-{DateTime.Now.ToString("s")}.csv");
+
+               return result;
+           }
+       }
+*/
+    }
+}

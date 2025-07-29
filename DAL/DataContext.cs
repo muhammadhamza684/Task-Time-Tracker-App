@@ -25,7 +25,7 @@ namespace Task___Time_Tracker_App.DAL
         }
 
         public DbSet<User> users { get; set; }  
-        public DbSet<Tassk> tasks { get; set; }
+        public DbSet<Tasks> tasks { get; set; }
 
         public DbSet<TimeLog> timeLogs { get; set; }
     }
