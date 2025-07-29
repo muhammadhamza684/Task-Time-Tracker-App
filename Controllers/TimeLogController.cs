@@ -20,46 +20,6 @@ namespace Task___Time_Tracker_App.Controllers
             _timeLogService = timeLogService;
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> GetAllTimeLog()
-        //{
-        //    var GetAll = await _dataContext.timeLogs.ToListAsync();
-        //    return Ok(GetAll);
-        //}
-        //[HttpGet("{id}")]
-
-        //public async Task<IActionResult> GetTimeLogById(int id)
-        //{
-        //    var GetByid = await _dataContext.timeLogs.FirstOrDefaultAsync(x=>x.Id==id);
-        //    if (GetByid == null)
-        //    {
-        //        return BadRequest();
-        //    }
-        //    return Ok(GetByid);
-
-        //}
-
-        //[HttpPost]
-        //public  async Task<IActionResult> CreateTimeLog([FromBody] TimeLogDto timeDto)
-        //{
-        //    var timeLog = new TimeLog {
-
-        //        TaskId = timeDto.TaskId,
-        //        UserId = timeDto.UserId,
-        //        HoursSpent = timeDto.HoursSpent,
-        //        LogDate = DateTime.Now
-
-        //    };
-
-        //    _dataContext.timeLogs.Add(timeLog);
-        //    await _dataContext.SaveChangesAsync();
-
-        //    return CreatedAtAction(nameof(GetAllTimeLog), new { id = timeLog.Id }, timeLog);
-        //}
-
-
-      
-
 
         [HttpGet]
         public async Task<IActionResult> GetAllTimeLog(int pageNO = 1, int pageSize = 2)
@@ -82,25 +42,7 @@ namespace Task___Time_Tracker_App.Controllers
         }
 
 
-        //[HttpGet]
-        //[ProducesResponseType(StatusCodes.Status200OK)]
-        //[Produces("text/csv")]
-        //public async Task<FileResult> Get()
-        //{
-
-        //    var data = await _timeLogService.timeLogs.ToListAsync();
-
-        //    using (var memoryStream = new MemoryStream())
-        //    {
-        //        using (var streamWriter = new StreamWriter(memoryStream))
-        //        using (var csvWriter = new CsvWriter(streamWriter, CultureInfo.InvariantCulture))
-        //        {
-        //            csvWriter.WriteRecords(data);
-        //        }
-
-        //        return File(memoryStream.ToArray(), "text/csv", $"Export-{DateTime.Now.ToString("s")}.csv");
-        //    }
-        //}
+       
 
         [HttpGet("export")]
         [Produces("text/csv")]
