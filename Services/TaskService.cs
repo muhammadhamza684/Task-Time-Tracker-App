@@ -14,7 +14,7 @@ namespace Task___Time_Tracker_App.Services
         Task<List<TaskDTO>> GetAllTaskAsync(int pageNO, int pageSize);
         Task<Models.Tasks> GetTaskByIdAsync(int id);
 
-        Task<Tasks> PostTaskAsync(Tasks tasks);
+        Task<Tasks> PostTaskAsync(CreateTaskDto dto);
 
         Task<Tasks> UpdateTaskAsync(int id,  Tasks tasks);
 
@@ -47,9 +47,19 @@ namespace Task___Time_Tracker_App.Services
             return Result;
         }
 
-        public async Task<Tasks> PostTaskAsync(Tasks tasks)
+        public async Task<Tasks> PostTaskAsync(CreateTaskDto dto)
         {
-            var Result = await _tasksRepositry.PostTaskAsync(tasks);
+            var CreateDtoData = new Tasks
+            {
+                Title = dto.Title,
+                Description = dto.Description,
+                Status = dto.Status,
+                CreatedDate = dto.CreatedDate,
+                AssignedUserId = dto.AssignedUserId,
+                TaskTypeId = dto.TaskTypeId,
+            };
+
+            var Result = await _tasksRepositry.PostTaskAsync(CreateDtoData);
             return Result;
         }
 
@@ -81,23 +91,25 @@ namespace Task___Time_Tracker_App.Services
         {
             return _tasksRepositry.GenerateTaskReportAsync();
         }
+
+      
         /*
-       Task<List<FileResult>> ITaskService.GenerateTaskReport()
-       {
-           var result = _tasksRepositry.GenerateTaskReport();
-           using (var memoryStream = new MemoryStream())
-           {
-               using (var streamWriter = new StreamWriter(memoryStream))
-               using (var csvWriter = new CsvWriter(streamWriter, CultureInfo.InvariantCulture))
-               {
-                   csvWriter.WriteRecords(result);
-               }
+Task<List<FileResult>> ITaskService.GenerateTaskReport()
+{
+  var result = _tasksRepositry.GenerateTaskReport();
+  using (var memoryStream = new MemoryStream())
+  {
+      using (var streamWriter = new StreamWriter(memoryStream))
+      using (var csvWriter = new CsvWriter(streamWriter, CultureInfo.InvariantCulture))
+      {
+          csvWriter.WriteRecords(result);
+      }
 
-               //return File(memoryStream.ToArray(), "text/csv", $"Export-{DateTime.Now.ToString("s")}.csv");
+      //return File(memoryStream.ToArray(), "text/csv", $"Export-{DateTime.Now.ToString("s")}.csv");
 
-               return result;
-           }
-       }
+      return result;
+  }
+}
 */
     }
 }

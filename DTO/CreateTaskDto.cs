@@ -1,9 +1,6 @@
-﻿
-using System.ComponentModel.DataAnnotations.Schema;
-using Task___Time_Tracker_App.Models;
-namespace Task___Time_Tracker_App.Models
+﻿namespace Task___Time_Tracker_App.DTO
 {
-    public class Tasks
+    public class CreateTaskDto
     {
         public int Id { get; set; }
         public string? Title { get; set; }
@@ -11,20 +8,9 @@ namespace Task___Time_Tracker_App.Models
         public string? Status { get; set; }
         public int AssignedUserId { get; set; }
 
-
-
         public DateTime? CreatedDate { get; set; }
-        public User? AssignedUser { get; set; }
-
+       
         public int TaskTypeId { get; set; }
-
-        public TaskType? TaskType { get; set; }
+      
     }
-
-
 }
-
-
-
-
-

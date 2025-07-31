@@ -12,6 +12,34 @@ namespace Task___Time_Tracker_App.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "TaskType",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TaskType", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserRule",
+                columns: table => new
+                {
+                    roll = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DeveloperTeamName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProductTeamName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    QualityAssurance = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserRule", x => x.roll);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "users",
                 columns: table => new
                 {
@@ -36,11 +64,18 @@ namespace Task___Time_Tracker_App.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AssignedUserId = table.Column<int>(type: "int", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    TaskTypeId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_tasks", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_tasks_TaskType_TaskTypeId",
+                        column: x => x.TaskTypeId,
+                        principalTable: "TaskType",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_tasks_users_AssignedUserId",
                         column: x => x.AssignedUserId,
@@ -83,6 +118,11 @@ namespace Task___Time_Tracker_App.Migrations
                 column: "AssignedUserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_tasks_TaskTypeId",
+                table: "tasks",
+                column: "TaskTypeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_timeLogs_TaskId",
                 table: "timeLogs",
                 column: "TaskId");
@@ -100,7 +140,13 @@ namespace Task___Time_Tracker_App.Migrations
                 name: "timeLogs");
 
             migrationBuilder.DropTable(
+                name: "UserRule");
+
+            migrationBuilder.DropTable(
                 name: "tasks");
+
+            migrationBuilder.DropTable(
+                name: "TaskType");
 
             migrationBuilder.DropTable(
                 name: "users");

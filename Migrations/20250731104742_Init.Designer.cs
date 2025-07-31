@@ -12,7 +12,7 @@ using Task___Time_Tracker_App.DAL;
 namespace Task___Time_Tracker_App.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250723100817_Init")]
+    [Migration("20250731104742_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -25,7 +25,49 @@ namespace Task___Time_Tracker_App.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Task___Time_Tracker_App.Models.Tassk", b =>
+            modelBuilder.Entity("Task___Time_Tracker_App.Models.Role", b =>
+                {
+                    b.Property<int>("roll")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("roll"));
+
+                    b.Property<string>("DeveloperTeamName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProductTeamName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("QualityAssurance")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("roll");
+
+                    b.ToTable("UserRule");
+                });
+
+            modelBuilder.Entity("Task___Time_Tracker_App.Models.TaskType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TaskType");
+                });
+
+            modelBuilder.Entity("Task___Time_Tracker_App.Models.Tasks", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -45,12 +87,17 @@ namespace Task___Time_Tracker_App.Migrations
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("TaskTypeId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AssignedUserId");
+
+                    b.HasIndex("TaskTypeId");
 
                     b.ToTable("tasks");
                 });
@@ -106,7 +153,7 @@ namespace Task___Time_Tracker_App.Migrations
                     b.ToTable("users");
                 });
 
-            modelBuilder.Entity("Task___Time_Tracker_App.Models.Tassk", b =>
+            modelBuilder.Entity("Task___Time_Tracker_App.Models.Tasks", b =>
                 {
                     b.HasOne("Task___Time_Tracker_App.Models.User", "AssignedUser")
                         .WithMany()
@@ -114,12 +161,20 @@ namespace Task___Time_Tracker_App.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Task___Time_Tracker_App.Models.TaskType", "TaskType")
+                        .WithMany()
+                        .HasForeignKey("TaskTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("AssignedUser");
+
+                    b.Navigation("TaskType");
                 });
 
             modelBuilder.Entity("Task___Time_Tracker_App.Models.TimeLog", b =>
                 {
-                    b.HasOne("Task___Time_Tracker_App.Models.Tassk", "Task")
+                    b.HasOne("Task___Time_Tracker_App.Models.Tasks", "Task")
                         .WithMany()
                         .HasForeignKey("TaskId")
                         .OnDelete(DeleteBehavior.Cascade)

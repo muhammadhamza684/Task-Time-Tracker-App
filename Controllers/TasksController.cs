@@ -8,6 +8,7 @@ using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Task___Time_Tracker_App.DAL;
+using Task___Time_Tracker_App.DTO;
 using Task___Time_Tracker_App.Models;
 using Task___Time_Tracker_App.Services;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
@@ -39,9 +40,9 @@ namespace Task___Time_Tracker_App.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostTask([FromBody] Tasks tasks)
+        public async Task<IActionResult> PostTask([FromBody] CreateTaskDto dto)
         {
-            await _taskService.PostTaskAsync(tasks);
+            await _taskService.PostTaskAsync(dto);
             return Ok("Task Assign Successfully");
         }
         [HttpPut("{id}")]

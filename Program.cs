@@ -28,6 +28,8 @@ builder.Services.AddScoped<ITimelogRepository, TimeLogRepository>();
 
 builder.Services.AddScoped<ITimeLogService, TimeLogService>();
 
+builder.Services.AddScoped<ITaskTypeRepository, TaskTypeRepository>();
+builder.Services.AddScoped<ITaskTypeService, TaskTypeService>();
 
 builder.Services.AddCors(options =>
 {

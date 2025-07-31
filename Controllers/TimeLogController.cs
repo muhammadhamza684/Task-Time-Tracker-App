@@ -42,8 +42,6 @@ namespace Task___Time_Tracker_App.Controllers
         }
 
 
-       
-
         [HttpGet("export")]
         [Produces("text/csv")]
         public async Task<FileResult> ExportCsv()

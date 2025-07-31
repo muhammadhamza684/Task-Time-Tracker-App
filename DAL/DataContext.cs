@@ -28,6 +28,11 @@ namespace Task___Time_Tracker_App.DAL
         public DbSet<Tasks> tasks { get; set; }
 
         public DbSet<TimeLog> timeLogs { get; set; }
+
+        public DbSet<Role> UserRule { get; set; }
+
+       public DbSet<TaskType> TaskType { get; set; }
+
     }
    
     }

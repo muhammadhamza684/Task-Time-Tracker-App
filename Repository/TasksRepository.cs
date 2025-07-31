@@ -21,6 +21,7 @@ namespace Task___Time_Tracker_App.Repository
 
         // Fix return type to match implementation
         Task<byte[]> GenerateTaskReportAsync();
+       
     }
     public class TasksRepository : ITasksRepositry
     {
@@ -30,22 +31,32 @@ namespace Task___Time_Tracker_App.Repository
             _dataContext = dataContext;
         }
 
+        
+
         public async Task<List<TaskDTO>> GetAllTaskAsync(int pageNO, int pageSize)
         {
             var result = await _dataContext.tasks
                 .Include(x => x.AssignedUser)
-                .Skip((pageNO - 1) * pageSize).Skip((pageNO - 1) * pageSize).Take(pageSize)
+                .Include(x => x.TaskType)
+                .Skip((pageNO - 1) * pageSize)
+                .Take(pageSize)
                 .Select(x => new TaskDTO
-                 {
-                     Id = x.Id,
-                     Title = x.Title,
-                     Description = x.Description,
-                     Status = x.Status,
-                     CreatedDate = x.CreatedDate,
-                     AssignedUser = x.AssignedUser.Name
-                 }).ToListAsync();
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    Description = x.Description,
+                    Status = x.Status,
+                    CreatedDate = x.CreatedDate,
+                    AssignedUser = x.AssignedUser.Name,
+                    taskType = x.TaskType.Type
+                })
+                .ToListAsync();
+
             return result;
         }
+
+        //
+
         public async Task<Tasks> GetTaskByIdAsync(int id)
         {
             var Result = await _dataContext.tasks.FirstOrDefaultAsync(x => x.Id == id);
@@ -54,10 +65,30 @@ namespace Task___Time_Tracker_App.Repository
 
         public async Task<Tasks> PostTaskAsync(Tasks tasks)
         {
-            _dataContext.tasks.Add(tasks);
-            await _dataContext.SaveChangesAsync();
+            
+                _dataContext.tasks.Add(tasks);
+                await _dataContext.SaveChangesAsync();
+
             return tasks;
         }
+        //public async Task<TaskDTO> PostTaskAsync(TaskDTO tasks)
+
+
+        //{
+        //    var taskEntity = new Tasks
+        //    {
+        //        Title = tasks.Title,
+        //        Description = tasks.Description,
+        //        Status = tasks.Status,
+        //        AssignedUserId = tasks.AssignedUserId,
+        //        TaskTypeId = tasks.TaskTypeId,
+        //        CreatedDate = DateTime.Now
+        //    };
+        //    _dataContext.tasks.Add(taskEntity);
+        //    await _dataContext.SaveChangesAsync();
+
+        //    return tasks;
+        //}
         public async Task<Tasks> FilterTaskByNameAsync(string taskName)
         {
 
@@ -90,8 +121,6 @@ namespace Task___Time_Tracker_App.Repository
 
             return Result;
         }
-
-     
         public async Task<byte[]> GenerateTaskReportAsync()
         {
             var logs = await GenerateTaskReportAsync();
@@ -105,6 +134,9 @@ namespace Task___Time_Tracker_App.Repository
 
             return memoryStream.ToArray();
         }
+
+      
+
        
     }
     }
