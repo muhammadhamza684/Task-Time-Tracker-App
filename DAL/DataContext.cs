@@ -33,6 +33,8 @@ namespace Task___Time_Tracker_App.DAL
 
        public DbSet<TaskType> TaskType { get; set; }
 
+      
+
     }
    
     }

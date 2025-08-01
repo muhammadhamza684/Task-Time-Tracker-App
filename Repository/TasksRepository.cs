@@ -38,6 +38,7 @@ namespace Task___Time_Tracker_App.Repository
             var result = await _dataContext.tasks
                 .Include(x => x.AssignedUser)
                 .Include(x => x.TaskType)
+                .Include(x=>x.UserRule)
                 .Skip((pageNO - 1) * pageSize)
                 .Take(pageSize)
                 .Select(x => new TaskDTO
@@ -48,7 +49,12 @@ namespace Task___Time_Tracker_App.Repository
                     Status = x.Status,
                     CreatedDate = x.CreatedDate,
                     AssignedUser = x.AssignedUser.Name,
-                    taskType = x.TaskType.Type
+                    taskType = x.TaskType.Type,
+                    // UserRollId = x.UserRollId,
+
+                    // UserRollId = x.UserRollId,
+                    UserRollId = x.UserRollId,
+                    UserRule = x.UserRule.TeamName
                 })
                 .ToListAsync();
 

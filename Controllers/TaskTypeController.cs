@@ -24,5 +24,13 @@ namespace Task___Time_Tracker_App.Controllers
             var result = await _taskTypeService.PostTaskAsync(task);
             return Ok(result);  
         }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateTaskType(TaskType task,int Id)
+        {
+            var result = await _taskTypeService.UpdateTaskAsync(task, Id);
+            return Ok("Task Updated SuccessFully");      
+
+        }
     }
 }

@@ -12,7 +12,7 @@ using Task___Time_Tracker_App.DAL;
 namespace Task___Time_Tracker_App.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250731104742_Init")]
+    [Migration("20250731170116_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -27,25 +27,17 @@ namespace Task___Time_Tracker_App.Migrations
 
             modelBuilder.Entity("Task___Time_Tracker_App.Models.Role", b =>
                 {
-                    b.Property<int>("roll")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("roll"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("DeveloperTeamName")
+                    b.Property<string>("TeamName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ProductTeamName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("QualityAssurance")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("roll");
+                    b.HasKey("Id");
 
                     b.ToTable("UserRule");
                 });
@@ -93,11 +85,19 @@ namespace Task___Time_Tracker_App.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("UserRollId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserRuleId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AssignedUserId");
 
                     b.HasIndex("TaskTypeId");
+
+                    b.HasIndex("UserRuleId");
 
                     b.ToTable("tasks");
                 });
@@ -167,9 +167,17 @@ namespace Task___Time_Tracker_App.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Task___Time_Tracker_App.Models.Role", "UserRule")
+                        .WithMany()
+                        .HasForeignKey("UserRuleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("AssignedUser");
 
                     b.Navigation("TaskType");
+
+                    b.Navigation("UserRule");
                 });
 
             modelBuilder.Entity("Task___Time_Tracker_App.Models.TimeLog", b =>

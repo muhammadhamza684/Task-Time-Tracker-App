@@ -28,15 +28,13 @@ namespace Task___Time_Tracker_App.Migrations
                 name: "UserRule",
                 columns: table => new
                 {
-                    roll = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    DeveloperTeamName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProductTeamName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    QualityAssurance = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    TeamName = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserRule", x => x.roll);
+                    table.PrimaryKey("PK_UserRule", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -65,7 +63,9 @@ namespace Task___Time_Tracker_App.Migrations
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AssignedUserId = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    TaskTypeId = table.Column<int>(type: "int", nullable: false)
+                    TaskTypeId = table.Column<int>(type: "int", nullable: false),
+                    UserRollId = table.Column<int>(type: "int", nullable: false),
+                    UserRuleId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -74,6 +74,12 @@ namespace Task___Time_Tracker_App.Migrations
                         name: "FK_tasks_TaskType_TaskTypeId",
                         column: x => x.TaskTypeId,
                         principalTable: "TaskType",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_tasks_UserRule_UserRuleId",
+                        column: x => x.UserRuleId,
+                        principalTable: "UserRule",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -123,6 +129,11 @@ namespace Task___Time_Tracker_App.Migrations
                 column: "TaskTypeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_tasks_UserRuleId",
+                table: "tasks",
+                column: "UserRuleId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_timeLogs_TaskId",
                 table: "timeLogs",
                 column: "TaskId");
@@ -140,13 +151,13 @@ namespace Task___Time_Tracker_App.Migrations
                 name: "timeLogs");
 
             migrationBuilder.DropTable(
-                name: "UserRule");
-
-            migrationBuilder.DropTable(
                 name: "tasks");
 
             migrationBuilder.DropTable(
                 name: "TaskType");
+
+            migrationBuilder.DropTable(
+                name: "UserRule");
 
             migrationBuilder.DropTable(
                 name: "users");

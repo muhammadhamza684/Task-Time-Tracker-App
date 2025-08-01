@@ -57,6 +57,9 @@ namespace Task___Time_Tracker_App.Services
                 CreatedDate = dto.CreatedDate,
                 AssignedUserId = dto.AssignedUserId,
                 TaskTypeId = dto.TaskTypeId,
+                UserRollId = dto.UserRollId,
+                UserRuleId = dto.UserRuleId
+                
             };
 
             var Result = await _tasksRepositry.PostTaskAsync(CreateDtoData);

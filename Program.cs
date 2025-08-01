@@ -31,6 +31,9 @@ builder.Services.AddScoped<ITimeLogService, TimeLogService>();
 builder.Services.AddScoped<ITaskTypeRepository, TaskTypeRepository>();
 builder.Services.AddScoped<ITaskTypeService, TaskTypeService>();
 
+builder.Services.AddScoped<IRollRepository, RollRepository>();
+builder.Services.AddScoped<IRollService, RollService>();
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
