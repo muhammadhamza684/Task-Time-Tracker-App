@@ -46,9 +46,9 @@ namespace Task___Time_Tracker_App.Controllers
             return Ok("Task Assign Successfully");
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateTask(int id, Tasks tasks)
+        public async Task<IActionResult> UpdateTask(int id, UpdateTaskDto dto)
         {
-            var result = await _taskService.UpdateTaskAsync(id, tasks);
+            var result = await _taskService.UpdateTaskAsync(id, dto);
 
             if (result == null)
                 return NotFound("Task not found");

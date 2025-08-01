@@ -16,7 +16,7 @@ namespace Task___Time_Tracker_App.Services
 
         Task<Tasks> PostTaskAsync(CreateTaskDto dto);
 
-        Task<Tasks> UpdateTaskAsync(int id,  Tasks tasks);
+        Task<Tasks> UpdateTaskAsync(int id,  UpdateTaskDto dto);
 
         Task<Tasks> FilterTaskByNameAsync(string taskName);
 
@@ -58,7 +58,7 @@ namespace Task___Time_Tracker_App.Services
                 AssignedUserId = dto.AssignedUserId,
                 TaskTypeId = dto.TaskTypeId,
                 UserRollId = dto.UserRollId,
-                UserRuleId = dto.UserRuleId
+               // UserRuleId = dto.UserRuleId
                 
             };
 
@@ -66,9 +66,21 @@ namespace Task___Time_Tracker_App.Services
             return Result;
         }
 
-        public async Task<Tasks> UpdateTaskAsync(int id, Tasks tasks)
+        public async Task<Tasks> UpdateTaskAsync(int id, UpdateTaskDto dto)
         {
-            var Result = await _tasksRepositry.UpdateTaskAsync(id, tasks);
+            var UpdateDataDto = new Tasks
+            {
+                Title = dto.Title,
+                Description= dto.Description,
+                Status = dto.Status,    
+                CreatedDate = dto.CreatedDate,  
+                AssignedUserId = dto.AssignedUserId,    
+                TaskTypeId = dto.TaskTypeId,    
+                UserRollId = dto.UserRollId,    
+             //   UserRuleId = dto.UserRuleId 
+            
+            };
+            var Result = await _tasksRepositry.UpdateTaskAsync(id, UpdateDataDto);
             if (Result == null)
             {
                 return null;
