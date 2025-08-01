@@ -76,7 +76,7 @@ namespace Task___Time_Tracker_App.Services
                 CreatedDate = dto.CreatedDate,  
                 AssignedUserId = dto.AssignedUserId,    
                 TaskTypeId = dto.TaskTypeId,    
-                UserRollId = dto.UserRollId,    
+            //  UserRollId = dto.UserRollId,    
              //   UserRuleId = dto.UserRuleId 
             
             };
@@ -107,24 +107,5 @@ namespace Task___Time_Tracker_App.Services
             return _tasksRepositry.GenerateTaskReportAsync();
         }
 
-      
-        /*
-Task<List<FileResult>> ITaskService.GenerateTaskReport()
-{
-  var result = _tasksRepositry.GenerateTaskReport();
-  using (var memoryStream = new MemoryStream())
-  {
-      using (var streamWriter = new StreamWriter(memoryStream))
-      using (var csvWriter = new CsvWriter(streamWriter, CultureInfo.InvariantCulture))
-      {
-          csvWriter.WriteRecords(result);
-      }
-
-      //return File(memoryStream.ToArray(), "text/csv", $"Export-{DateTime.Now.ToString("s")}.csv");
-
-      return result;
-  }
-}
-*/
     }
 }

@@ -14,6 +14,6 @@
 
         public int TaskTypeId { get; set; }
 
-        public int UserRollId { get; set; }
+       // public int UserRollId { get; set; }
     }
 }

@@ -32,7 +32,6 @@ namespace Task___Time_Tracker_App.Repository
             _dataContext = dataContext;
         }
 
-       
         // Get All User
         public async Task<List<User>> GetAllUserAsync(int pageNO, int pageSize)
         {
@@ -43,7 +42,7 @@ namespace Task___Time_Tracker_App.Repository
         // Get Single user BY using Id
         public async Task<User> GetByIdAsync(int id)
         {
-             var SingleUser =  await _dataContext.users.FirstOrDefaultAsync(x => x.Id == id);
+            var SingleUser =  await _dataContext.users.FirstOrDefaultAsync(x => x.Id == id);
             
             return SingleUser;
         }
@@ -64,7 +63,7 @@ namespace Task___Time_Tracker_App.Repository
             return SigleUserDelte;
         }
 
-        public async Task<User> UpdateUserAsync( int id,User user)
+        public async Task<User> UpdateUserAsync(int id,User user)
         {
             var SingleUserUpdate = await _dataContext.users.FirstOrDefaultAsync(x => x.Id == id);
 
@@ -92,6 +91,5 @@ namespace Task___Time_Tracker_App.Repository
 
             return memoryStream.ToArray();
         }
-       
     }
 }

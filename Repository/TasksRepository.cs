@@ -31,8 +31,6 @@ namespace Task___Time_Tracker_App.Repository
             _dataContext = dataContext;
         }
 
-        
-
         public async Task<List<TaskDTO>> GetAllTaskAsync(int pageNO, int pageSize)
         {
             var result = await _dataContext.tasks
