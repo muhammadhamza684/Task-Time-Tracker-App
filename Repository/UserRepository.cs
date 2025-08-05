@@ -1,10 +1,14 @@
 ﻿using CsvHelper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System.Globalization;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Task___Time_Tracker_App.DAL;
+using Task___Time_Tracker_App.DTO;
 using Task___Time_Tracker_App.Models;
 
 namespace Task___Time_Tracker_App.Repository
@@ -16,6 +20,8 @@ namespace Task___Time_Tracker_App.Repository
         Task<User> GetByIdAsync(int id);
         Task<User> CreateUserAsync(User user);
 
+        Task<Object> LoginUserAsync(LoginDto loginDto);
+
         Task<User> DeleteUserAsync(int id);
         Task<User> UpdateUserAsync(int id, User user);
 
@@ -23,13 +29,18 @@ namespace Task___Time_Tracker_App.Repository
 
         Task<byte[]> GenerateTaskReportAsync();
 
+
     }
     public class UserRepository : IuserRepository
     {
         private readonly DataContext _dataContext;
-        public UserRepository(DataContext dataContext)
+        private readonly IConfiguration _config;
+        private object user;
+
+        public UserRepository(DataContext dataContext, IConfiguration config    )
         {
             _dataContext = dataContext;
+            _config = config;
         }
 
         // Get All User
@@ -54,6 +65,54 @@ namespace Task___Time_Tracker_App.Repository
            await _dataContext.SaveChangesAsync();   
             return user;    
         }
+
+
+        //user login
+
+        public async Task<Object> LoginUserAsync([FromBody] LoginDto loginDto)
+        {
+            var user =  _dataContext.users.FirstOrDefault(x => x.Name == loginDto.Name && x.Password == loginDto.Password);
+
+            if (user != null)
+            {
+                var claims = new[]
+                {
+                    new Claim(JwtRegisteredClaimNames.Sub, _config["Jwt:Subject"]),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                     //new Claim("Name",user.Name.ToString()),
+                     //  new Claim("Password",user.Password.ToString()),
+                     new Claim("Name" , user.Name.ToString()),
+                     new Claim("Password", user.Password.ToString()),
+                };
+
+                var Key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+                var signIn = new SigningCredentials(Key, SecurityAlgorithms.HmacSha256);
+
+                var token = new JwtSecurityToken(_config["Jwt:Issuer"],
+                _config["Jwt:Issuer"],
+                claims,
+                expires: DateTime.Now.AddMinutes(120),
+                signingCredentials: signIn);
+
+               // string tokenValue = new JwtSecurityTokenHandler().WriteToken(token);
+
+
+                var tokenValue = new JwtSecurityTokenHandler().WriteToken(token);
+
+                return new { Token = tokenValue, User = user };
+
+                //return new { Token = tokenValue, User = user };
+
+                //  return new User {  = tokenValue, User = user };
+            }
+
+            return user;
+        }
+
+        //private User Users(object value)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public async Task<User> DeleteUserAsync(int id)
         {

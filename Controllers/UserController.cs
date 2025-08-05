@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 using System.Globalization;
 using Task___Time_Tracker_App.DAL;
+using Task___Time_Tracker_App.DTO;
 using Task___Time_Tracker_App.Models;
 using Task___Time_Tracker_App.Services;
 
@@ -21,7 +22,6 @@ namespace Task___Time_Tracker_App.Controllers
         {
             _userService = userService;
         }
-
 
         [HttpGet]
         public async Task<IActionResult> GetAllUser(int pageNO=1, int pageSize=2)
@@ -42,6 +42,15 @@ namespace Task___Time_Tracker_App.Controllers
         {
             var CreateUser = await _userService.CreateUserAsync(user);
             return Ok(CreateUser);  
+        }
+
+        //Login Verb
+        [HttpPost("login")]
+
+        public async Task<IActionResult> LoginUser([FromBody] LoginDto loginDto)
+        {
+            var user = await _userService.LoginUserAsync(loginDto);
+            return Ok(user);
         }
 
         [HttpDelete("{id}")]

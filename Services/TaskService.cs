@@ -65,7 +65,6 @@ namespace Task___Time_Tracker_App.Services
             var Result = await _tasksRepositry.PostTaskAsync(CreateDtoData);
             return Result;
         }
-
         public async Task<Tasks> UpdateTaskAsync(int id, UpdateTaskDto dto)
         {
             var UpdateDataDto = new Tasks
@@ -88,8 +87,6 @@ namespace Task___Time_Tracker_App.Services
 
             return Result;
         }
-
-
         public async Task<Tasks> FilterTaskByNameAsync(string taskName)
         {
             var Result = await _tasksRepositry.FilterTaskByNameAsync(taskName);
